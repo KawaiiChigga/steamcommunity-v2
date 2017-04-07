@@ -26,3 +26,8 @@ class UserSerializer (serializers.ModelSerializer):
         model = User
         fields = ('userid', 'username', 'email', 'imageurl', 'description', 'name', 'country', 'province',
                   'city', 'joindate', 'discussionid')
+
+class CreateUserSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('password', 'username', 'email', 'joindate')

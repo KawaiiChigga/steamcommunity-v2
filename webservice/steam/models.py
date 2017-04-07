@@ -13,7 +13,7 @@ from django.db import models
 class Discussion(models.Model):
     discussionid = models.AutoField(db_column='discussionID', primary_key=True)  # Field name made lowercase.
     gamename = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     imgurl = models.CharField(max_length=256)
 
     class Meta:
@@ -21,8 +21,8 @@ class Discussion(models.Model):
 
 
 class Friends(models.Model):
-    userid = models.ForeignKey('User', models.DO_NOTHING, related_name='user_id', db_column='userID')  # Field name made lowercase.
-    friendid = models.ForeignKey('User', models.DO_NOTHING, related_name='friend_id', db_column='friendID')  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, related_name='user_id', db_column='userID', primary_key=True)  # Field name made lowercase.
+    friendid = models.ForeignKey('User', models.DO_NOTHING, related_name='friend_id', db_column='friendID', primary_key=True)  # Field name made lowercase.
     status = models.IntegerField()
 
     class Meta:
@@ -63,15 +63,14 @@ class User(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=100)
     email = models.CharField(max_length=30)
-    imageurl = models.CharField(db_column='imageURL', max_length=256)  # Field name made lowercase.
-    description = models.CharField(max_length=256)
-    name = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    province = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
+    imageurl = models.CharField(db_column='imageURL', max_length=256, blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(max_length=256, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    province = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
     joindate = models.DateTimeField(db_column='joinDate')  # Field name made lowercase.
     discussionid = models.ForeignKey(Discussion, models.DO_NOTHING, db_column='discussionID', blank=True, null=True)  # Field name made lowercase.
-
     class Meta:
         managed = False
         db_table = 'user'

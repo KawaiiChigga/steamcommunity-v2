@@ -18,10 +18,23 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from steam import views
 
 urlpatterns = [
-    url(r'^discussion/$', views.DiscussionList.as_view()),
-    url(r'^user/$', views.UserList.as_view()),
-    url(r'^login/$', views.login, name='urlname'),
-    # url(r'^discussion/(?P<pk>[0-9]+)/$', views.discussion_detail),
+    url(r'^account/$', views.createAccount),
+    url(r'^account/(?P<uid>[0-9]+)/$', views.user),
+    url(r'^account/login/$', views.login),
+    url(r'^account/search/$', views.searchAccount),
+    url(r'^discussion/$', views.discussion),
+    url(r'^discussion/(?P<pk>[0-9]+)/$', views.getDiscussion),
+    url(r'^discussion/search/$', views.searchDiscussion),
+    url(r'^post/$', views.createPost),
+    url(r'^post/(?P<pk>[0-9]+)/$', views.post),
+    url(r'^post/thread/(?P<threadid>[0-9]+)/$', views.getAllPost),
+    url(r'^post/user/(?P<userid>[0-9]+)/$', views.getPostByUserId),
+    url(r'^thread/$', views.createThread),
+    url(r'^thread/(?P<pk>[0-9]+)/$', views.getThread),
+    url(r'^thread/search/(?P<discussionid>[0-9]+)/$', views.searchThread),
+    url(r'^thread/discussion/(?P<disID>[0-9]+)/(?P<category>[0-1]+)/$', views.getAllThread),
+    url(r'^friend/$', views.checkFriendStatus),
+    url(r'^friend/user/$', views.getFriendByUserId),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
