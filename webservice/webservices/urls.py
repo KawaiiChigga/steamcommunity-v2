@@ -20,7 +20,7 @@ from steam import views
 urlpatterns = [
     url(r'^account/$', views.createAccount),
     url(r'^account/(?P<pk>[0-9]+)/$', views.user),
-    url(r'^account/login/$', views.login),
+    url(r'^account/login', views.login),
     url(r'^account/search/$', views.searchAccount),
     url(r'^discussion/$', views.discussion),
     url(r'^discussion/(?P<pk>[0-9]+)/$', views.getDiscussion),
@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^thread/$', views.createThread),
     url(r'^thread/(?P<pk>[0-9]+)/$', views.getThread),
     url(r'^thread/search/(?P<discussionid>[0-9]+)/$', views.searchThread),
-    url(r'^thread/discussion/(?P<disID>[0-9]+)/(?P<category>[0-1]+)/$', views.getAllThread),
+    url(r'^thread/discussion/(?P<disID>[0-9]+)/(?P<category>[1-2]+)/$', views.getAllThread),
     url(r'^friend/$', views.addFriend),
     url(r'^friend/confirm/(?P<uid>[0-9])+/(?P<fid>[0-9]+)/$', views.confirmFriend),
     url(r'^friend/check/$', views.checkFriendStatus),

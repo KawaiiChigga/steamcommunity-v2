@@ -9,7 +9,7 @@ class DiscussionSerializer(serializers.ModelSerializer):
 class FriendsSerializer (serializers.ModelSerializer):
     class Meta:
         model = Friends
-        fields = ('userid', 'friendid', 'status')
+        fields = ('fid', 'userid', 'friendid', 'status')
 
 class PostSerializer (serializers.ModelSerializer):
     class Meta:

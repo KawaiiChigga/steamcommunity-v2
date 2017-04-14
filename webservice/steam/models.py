@@ -21,14 +21,14 @@ class Discussion(models.Model):
 
 
 class Friends(models.Model):
-    userid = models.ForeignKey('User', models.DO_NOTHING, related_name='user_id', db_column='userID', primary_key=True)  # Field name made lowercase.
-    friendid = models.ForeignKey('User', models.DO_NOTHING, related_name='friend_id', db_column='friendID', primary_key=True)  # Field name made lowercase.
+    fid = models.AutoField(primary_key=True)
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userID', related_name="user_id")  # Field name made lowercase.
+    friendid = models.ForeignKey('User', models.DO_NOTHING, db_column='friendID', related_name="friend_id")  # Field name made lowercase.
     status = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'friends'
-        unique_together = (('userid', 'friendid'),)
 
 
 class Post(models.Model):
