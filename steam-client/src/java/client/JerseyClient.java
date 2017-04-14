@@ -48,6 +48,12 @@ public class JerseyClient {
         resource = resource.path("account").path(uid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
+    
+    public String getUser(String uid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("account").path(uid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
 
     public String getAllDiscussion() {
         WebTarget resource = webTarget;
@@ -61,7 +67,7 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getDiscussion(int disid) {
+    public String getDiscussion(String disid) {
         WebTarget resource = webTarget;
         resource = resource.path("discussion").path("" + disid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
@@ -85,7 +91,7 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getAllPost(int threadid) {
+    public String getAllPost(String threadid) {
         WebTarget resource = webTarget;
         resource = resource.path("post").path("thread").path("" + threadid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
@@ -97,7 +103,7 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getThread(int threadid) {
+    public String getThread(String threadid) {
         WebTarget resource = webTarget;
         resource = resource.path("thread").path("" + threadid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
@@ -109,17 +115,12 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getAllThread(int disid, int category) {
+    public String getAllThread(String disid, String category) {
         WebTarget resource = webTarget;
         resource = resource.path("thread").path("discussion").path("" + disid).path("" + category);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getUser(int uid) {
-        WebTarget resource = webTarget;
-        resource = resource.path("user").path("?" + uid);
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-    }
 
 //    public String addFriend() {
 //        WebTarget resource = webTarget;
