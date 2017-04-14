@@ -12,7 +12,7 @@
         <a href="support.jsp" class="linktext">SUPPORT</a>
     </div>
     <div class="loginbutton">
-        <%
+        <%--
             Integer uid = (Integer) session.getAttribute("currentsession");
             if (uid == null) {
                 out.println("<a href='login.jsp'>login</a>");
@@ -22,7 +22,7 @@
                 String username = (String) obj.get("username");
                 out.println("<a href='profile.jsp?uid=" + uid + "'>" + username + "</a>");
             }
-        %>
+        --%>
         
     </div>
 </header>

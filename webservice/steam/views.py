@@ -161,8 +161,8 @@ def createThread(request):
 @api_view(['GET'])
 def getThread(request, pk):
     if request.method == 'GET':
-        queryset = Thread.objects.all().filter(pk=pk)
-        serializer = ThreadSerializer(queryset, many=True)
+        queryset = Thread.objects.get(pk=pk)
+        serializer = ThreadSerializer(queryset)
         return Response(serializer.data)
 
 
