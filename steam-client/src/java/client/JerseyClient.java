@@ -31,20 +31,115 @@ public class JerseyClient {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI);
     }
-    
-    public String getAllDiscussion(){
+
+//    public String login(){
+//        WebTarget resource = webTarget;
+//        resource = resource.path("account").path("login");
+//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+//    }
+    public String searchAccount(String uid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("account").path("search").queryParam("text", uid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String user(String uid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("account").path(uid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getAllDiscussion() {
         WebTarget resource = webTarget;
         resource = resource.path("discussion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String getUser(Integer uid) {
+    public String discussion() {
+        WebTarget resource = webTarget;
+        resource = resource.path("discussion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getDiscussion(int disid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("discussion").path("" + disid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String searchDiscussion(String disid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("discussion").path("search").queryParam("text", disid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String post(int postid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("post").path("" + postid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String createPost() {
+        WebTarget resource = webTarget;
+        resource = resource.path("post");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getAllPost(int threadid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("post").path("thread").path("" + threadid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String createThread() {
+        WebTarget resource = webTarget;
+        resource = resource.path("thread");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getThread(int threadid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("thread").path("" + threadid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String searchThread(String text, int disid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("thread").path("search").path(text).path("" + disid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getAllThread(int disid, int category) {
+        WebTarget resource = webTarget;
+        resource = resource.path("thread").path("discussion").path("" + disid).path("" + category);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getUser(int uid) {
         WebTarget resource = webTarget;
         resource = resource.path("user").path("?" + uid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
+
+//    public String addFriend() {
+//        WebTarget resource = webTarget;
+//        resource = resource.path("friend");
+//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+//    }
+//
+//    public String checkFriendStatus(int uid, int fid) {
+//        WebTarget resource = webTarget;
+//        resource = resource.path("friend?uid=" + uid + "&fid=" + fid);
+//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+//    }
+//
+//    public String getFriendByUserId(int uid) {
+//        WebTarget resource = webTarget;
+//        resource = resource.path("friend").path("user").path("" + uid);
+//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+//    }
+
     public void close() {
         client.close();
     }
-    
 }
