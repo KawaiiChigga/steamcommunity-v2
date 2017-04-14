@@ -1,3 +1,5 @@
+from typing import re
+
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework import generics, views
@@ -57,14 +59,14 @@ def login(request):
 def searchAccount(request):
     if request.method == 'GET':
         text = request.query_params.get('text', None);
-        queryset = User.objects.all().filter(username__contains=text)
+        queryset = User.objects.all().filter(username__icontains=text)
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
 # CtrlDiscussion
 # /discussion/
-@api_view(['GET'], ['POST'])
+@api_view(['GET', 'PUT'])
 def discussion(request):
     if request.method == 'GET':
         queryset = Discussion.objects.all()
@@ -72,7 +74,7 @@ def discussion(request):
         return Response(serializer.data)
     elif request.method == 'PUT':
         serializer = DiscussionSerializer(data=request.data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -92,7 +94,7 @@ def getDiscussion(request, pk):
 def searchDiscussion(request):
     if request.method == 'GET':
         text = request.query_params.get('text', None)
-        queryset = Discussion.objects.all().filter(gamename__contains=text) | Discussion.objects.all().filter(description__contains=text)
+        queryset = Discussion.objects.all().filter(gamename__icontains=text) | Discussion.objects.all().filter(description__icontains=text)
         serializer = DiscussionSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -169,7 +171,7 @@ def getThread(request, pk):
 def searchThread(request, discussionid):
     if request.method == 'GET':
         text = request.query_params.get('text', None)
-        queryset = Thread.objects.all().filter(discussionid=discussionid, title__contains=text)
+        queryset = Thread.objects.all().filter(discussionid=discussionid, title__icontains=text)
         serializer = ThreadSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -195,7 +197,26 @@ def addFriend(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# /friend?uid={uid}&fid={fid}
+# /friend/confirm/{uid}/{fid}/
+@api_view(['PUT'])
+def confirmFriend(request, uid, fid):
+    if request.method == 'PUT':
+        queryset = Friends.objects.get(userid=uid, friendid=fid)
+        serializer = FriendsSerializer(queryset, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save();
+            # dat = "{'userid': " + fid + ", 'friendid': " + uid + ", 'status': 1}"
+            # serializer2 = FriendsSerializer(data=dat)
+            # if serializer2.is_valid():
+            #     serializer.save()
+            #     serializer2.save()
+            #     return Response(serializer2.data, status=status.HTTP_201_CREATED)
+            # return Response(serializer2.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# /friend/check?uid={uid}&fid={fid}
 @api_view(['GET'])
 def checkFriendStatus(request):
     if request.method == 'GET':
@@ -206,11 +227,26 @@ def checkFriendStatus(request):
         return Response(serializer.data)
 
 
-# /friend/user/{id}
+# /friend/user/{uid}?all={isAll}/
 @api_view(['GET'])
-def getFriendByUserId(request):
+def getFriendByUserId(request, pk):
     if request.method == 'GET':
-        all = request.query_params.get('isall', None)
+        stat = request.query_params.get('all', 0)
+        queryset = Friends.objects.all().filter(userid=pk)
+        if stat == 1:
+            queryset = queryset.filter(status=1)
+        serializer = FriendsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+# /friend/user/req/{uid}/
+@api_view(['GET'])
+def getRequestedFriendByUserId(request, pk):
+    if request.method == 'GET':
+        queryset = Friends.objects.all().filter(friendid=pk, status=0)
+        serializer = FriendsSerializer(queryset)
+        return Response(serializer.data)
+
 
 # class UserList(generics.ListAPIView):
 #     serializer_class = UserSerializer

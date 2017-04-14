@@ -33,8 +33,11 @@ urlpatterns = [
     url(r'^thread/(?P<pk>[0-9]+)/$', views.getThread),
     url(r'^thread/search/(?P<discussionid>[0-9]+)/$', views.searchThread),
     url(r'^thread/discussion/(?P<disID>[0-9]+)/(?P<category>[0-1]+)/$', views.getAllThread),
-    url(r'^friend/$', views.checkFriendStatus),
-    url(r'^friend/user/$', views.getFriendByUserId),
+    url(r'^friend/$', views.addFriend),
+    url(r'^friend/confirm/(?P<uid>[0-9])+/(?P<fid>[0-9]+)/$', views.confirmFriend),
+    url(r'^friend/check/$', views.checkFriendStatus),
+    url(r'^friend/user/(?P<pk>[0-9]+)/$', views.getFriendByUserId),
+    url(r'^friend/user/req/(?P<pk>[0-9]+)/$', views.getRequestedFriendByUserId),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
