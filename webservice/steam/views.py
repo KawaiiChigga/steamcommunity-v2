@@ -49,7 +49,6 @@ def login(request):
     if request.method == 'POST':
         username = request.data.get('username', None)
         password = request.data.get('password', None)
-        print(username)
         queryset = User.objects.get(username=username, password=password)
         serializer = UserSerializer(queryset)
         return Response(serializer.data)
@@ -202,10 +201,10 @@ def addFriend(request):
 @api_view(['PUT'])
 def confirmFriend(request, uid, fid):
     if request.method == 'PUT':
-        queryset = Friends.objects.get(userid=uid, friendid=fid)
+        queryset = Friends.objects.get(userid=fid, friendid=uid)
         serializer = FriendsSerializer(queryset, data=request.data, partial=True)
         if serializer.is_valid():
-            dat = ast.literal_eval("{'userid': " + fid + ", 'friendid': " + uid + ", 'status': 1}")
+            dat = ast.literal_eval("{'userid': " + uid + ", 'friendid': " + fid + ", 'status': 1}")
             serializer2 = FriendsSerializer(data=dat)
             if serializer2.is_valid():
                 serializer.save()
@@ -219,11 +218,13 @@ def confirmFriend(request, uid, fid):
 @api_view(['GET'])
 def checkFriendStatus(request):
     if request.method == 'GET':
-        uid = request.query_params.get('uid', None)
-        fid = request.query_params.get('fid', None)
-        queryset = Friends.objects.get(userid=uid, friendid=fid)
+        try:
+            uid = request.query_params.get('uid', None)
+            fid = request.query_params.get('fid', None)
+            queryset = Friends.objects.get(userid=uid, friendid=fid)
+        except Friends.DoesNotExist:
+            return Response(None)
         serializer = FriendsSerializer(queryset)
-        print(serializer.data)
         return Response(serializer.data)
 
 
@@ -232,7 +233,7 @@ def checkFriendStatus(request):
 def getFriendByUserId(request, pk):
     if request.method == 'GET':
         stat = request.query_params.get('all', 0)
-        queryset = Friends.objects.all().filter(userid=pk)
+        queryset = Friends.objects.all().filter(userid=pk, status=1)
         if stat == 0:
             queryset = queryset.filter(status=1)
         serializer = FriendsSerializer(queryset, many=True)

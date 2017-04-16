@@ -5,9 +5,10 @@
  */
 package client;
 
-import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import org.json.simple.JSONObject;
 
 /**
  * Jersey REST client generated for REST resource:CobaWS [cobaWS]<br>
@@ -32,11 +33,13 @@ public class JerseyClient {
         webTarget = client.target(BASE_URI);
     }
 
-//    public String login(){
-//        WebTarget resource = webTarget;
-//        resource = resource.path("account").path("login");
-//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-//    }
+    public String login(JSONObject obj){
+        WebTarget resource = webTarget;
+        resource = resource.path("account").path("login");
+        String res = resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(Entity.json(obj.toJSONString()), String.class);
+        return res;
+    }
+    
     public String searchAccount(String uid) {
         WebTarget resource = webTarget;
         resource = resource.path("account").path("search").queryParam("text", uid);
@@ -96,6 +99,12 @@ public class JerseyClient {
         resource = resource.path("post").path("thread").path("" + threadid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
+    
+    public String getPostByUserId (String uid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("post").path("user").path(uid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
 
     public String createThread() {
         WebTarget resource = webTarget;
@@ -121,7 +130,35 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-
+    public String checkFriendStatus(String uid, String fid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("friend").path("check").queryParam("uid", uid).queryParam("fid", fid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+    
+    public String getFriendByUserId(String uid, String all) {
+        WebTarget resource = webTarget;
+        resource = resource.path("friend").path("user").path(uid).queryParam("all", all);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+    
+    public String getRequestedFriendByUserId(String uid){
+        WebTarget resource = webTarget;
+        resource = resource.path("friend").path("user").path("req").path(uid);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+    
+    public String addFriend(JSONObject obj) {
+        WebTarget resource = webTarget;
+        resource = resource.path("friend/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
+    }
+    
+    public String confirmFriend(String uid, String fid, JSONObject obj){
+        WebTarget resource = webTarget;
+        resource = resource.path("friend").path("confirm").path(uid).path(fid+"/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
+    }
 //    public String addFriend() {
 //        WebTarget resource = webTarget;
 //        resource = resource.path("friend");

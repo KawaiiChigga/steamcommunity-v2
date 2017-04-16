@@ -3,6 +3,10 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+import org.json.simple.JSONObject;
+import client.JerseyClient;
 
 public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -42,6 +46,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
       out.write("<!DOCTYPE html>\r\n");
       out.write("<html>\r\n");
       out.write("    <head>\r\n");
@@ -74,23 +82,42 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <h3 style=\"color: #66C0F4\">Game Forums</h3>\r\n");
       out.write("                <div class=\"line\"></div><br>\r\n");
       out.write("                <div class=\"contenthomeleft\">\r\n");
-      out.write("                    \r\n");
-      out.write("                </div>\r\n");
-      out.write("//                    ");
+      out.write("                    ");
 
-//                        User u = CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
-//                        if (u != null) {
-//                            if (u.getUserId() == 1) {
-//                    
+                        JerseyClient jc = new JerseyClient();
+                        JSONArray data = (JSONArray) JSONValue.parse(jc.getAllDiscussion());
+                        for (int i = 0; i < data.size(); i++) {
+                            JSONObject temp = (JSONObject) data.get(i);
+                            Long id = (Long) temp.get("discussionid");
+                            String gamename = (String) temp.get("gamename");
+                            String imgurl = (String) temp.get("imgurl");
+                            
       out.write("\r\n");
-      out.write("//                            <div class=\"contenthomeright\">\r\n");
-      out.write("//                                <a href=\"addDiscussion.jsp\"><input type=\"submit\" class=\"btn btn-default\" style=\"background-color:rgb(27,40,56); margin-top:5px;color:white; float:right; font-family: lato; font-size: 16px;\" value=\"Create New Discussion\"></a>\r\n");
-      out.write("//                            </div>\r\n");
-      out.write("//                    ");
+      out.write("     \r\n");
+      out.write("                            <div class=\"discussionbar\">\r\n");
+      out.write("                                <div class=\"discussionbarlogo\" style=\"\r\n");
+      out.write("                                    background-image: url('image/games/");
+      out.print(imgurl);
+      out.write("');\r\n");
+      out.write("                                    background-repeat: no-repeat;\r\n");
+      out.write("                                    background-size: contain;\">\r\n");
+      out.write("                                </div>\r\n");
+      out.write("                                <a href=\"thread.jsp?id=");
+      out.print(id);
+      out.write("\" class=\"discussiontitle\">");
+      out.print(gamename);
+      out.write("</a>\r\n");
+      out.write("                                <a href=\"thread.jsp?id=");
+      out.print(id);
+      out.write("\" class=\"viewall\">VIEW ALL</a>\r\n");
+      out.write("                            </div>\r\n");
+      out.write("                    ");
 
-//                            }
-//                        }
-//                    
+                        }
+                    
+      out.write("\r\n");
+      out.write("                </div>\r\n");
+      out.write("                    ");
       out.write("\r\n");
       out.write("                \r\n");
       out.write("            </div>\r\n");
