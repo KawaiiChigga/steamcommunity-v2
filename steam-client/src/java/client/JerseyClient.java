@@ -46,10 +46,10 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String user(String uid) {
+    public String editUser(String uid, JSONObject obj) {
         WebTarget resource = webTarget;
-        resource = resource.path("account").path(uid);
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+        resource = resource.path("account").path(uid + "/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
     }
     
     public String getUser(String uid) {
