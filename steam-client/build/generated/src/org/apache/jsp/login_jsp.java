@@ -3,6 +3,7 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import fb.FBConnection;
 
 public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -42,6 +43,7 @@ public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
       out.write("\r\n");
+      out.write("\r\n");
       out.write("<!DOCTYPE html>\r\n");
       out.write("<html>\r\n");
       out.write("    <head>\r\n");
@@ -67,6 +69,14 @@ public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            <input type=\"checkbox\" name=\"checkRemember\" /> Remember me on this computer <br/><br/>\r\n");
       out.write("                            <input type=\"submit\" name=\"btnSubmit\" value=\"Sign in\"/>\r\n");
       out.write("                        </form>\r\n");
+      out.write("                        ");
+
+                            FBConnection fbConnection = new FBConnection();
+                        
+      out.write("\r\n");
+      out.write("                        <a href=\"");
+      out.print(fbConnection.getFBAuthUrl());
+      out.write("\">Login Via Facebook</a>\r\n");
       out.write("                        <a href=\"#\">Forgot your password?</a>\r\n");
       out.write("                    </div>\r\n");
       out.write("                    <div class=\"highlight_right\">\r\n");

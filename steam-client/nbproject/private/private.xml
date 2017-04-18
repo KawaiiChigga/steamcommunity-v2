@@ -3,20 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/EditProfileServlet.java</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/rightcontent.jsp</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/client/JerseyClient.java</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/RegisterServlet.java</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/NewPostServlet.java</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/headerthread.jsp</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/EditPostServlet.java</file>
             <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/DiscussionServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/addDiscussion.jsp</file>
             <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/header.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/profile.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/rightcontent.jsp</file>
             <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/index.jsp</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/LogoutServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/client/JerseyClient.java</file>
             <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/thread.jsp</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/post.jsp</file>
-            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/head.jsp</file>
             <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/NewThreadServlet.java</file>
         </group>
     </open-files>
