@@ -118,6 +118,24 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("                </div>\r\n");
       out.write("                    ");
+
+                        String ses = (String) request.getSession().getAttribute("currentsession");
+                        
+                        
+                                //CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
+                        if (ses != null) {
+                            JSONObject u = (JSONObject) JSONValue.parse(jc.getUser(ses));
+                            if (u.get("userid").toString().equals("1")) {
+                    
+      out.write("\r\n");
+      out.write("                            <div class=\"contenthomeright\">\r\n");
+      out.write("                                <a href=\"addDiscussion.jsp\"><input type=\"submit\" class=\"btn btn-default\" style=\"background-color:rgb(27,40,56); margin-top:5px;color:white; float:right; font-family: lato; font-size: 16px;\" value=\"Create New Discussion\"></a>\r\n");
+      out.write("                            </div>\r\n");
+      out.write("                    ");
+
+                            }
+                        }
+                    
       out.write("\r\n");
       out.write("                \r\n");
       out.write("            </div>\r\n");

@@ -54,10 +54,14 @@
                         }
                     %>
                 </div>
-                    <%--
-                        User u = CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
-                        if (u != null) {
-                            if (u.getUserId() == 1) {
+                    <%
+                        String ses = (String) request.getSession().getAttribute("currentsession");
+                        
+                        
+                                //CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
+                        if (ses != null) {
+                            JSONObject u = (JSONObject) JSONValue.parse(jc.getUser(ses));
+                            if (u.get("userid").toString().equals("1")) {
                     %>
                             <div class="contenthomeright">
                                 <a href="addDiscussion.jsp"><input type="submit" class="btn btn-default" style="background-color:rgb(27,40,56); margin-top:5px;color:white; float:right; font-family: lato; font-size: 16px;" value="Create New Discussion"></a>
@@ -65,7 +69,7 @@
                     <%
                             }
                         }
-                    --%>
+                    %>
                 
             </div>
             

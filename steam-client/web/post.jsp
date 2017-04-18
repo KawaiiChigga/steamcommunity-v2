@@ -23,16 +23,19 @@
             JSONArray posts = (JSONArray) JSONValue.parse(jc.getAllPost(threadid));
             JSONObject poster = (JSONObject) JSONValue.parse(jc.getUser(currentThread.get("userid").toString()));
             String imgurl = poster.get("imageurl").toString();
+            String ses = (String) session.getAttribute("currentsession");
+            JSONObject u = null;
 //            User u = CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
-//            boolean moderator = false;
-//            if (u != null) {
-//                if (u.getDiscussion() != null) {
-//                    if (u.getDiscussion().getDiscussionId() == Integer.parseInt(request.getParameter("id"))) {
-//                        moderator = true;
-//                    }
-//
-//                }
-//            }
+            boolean moderator = false;
+            if (ses != null) {
+                u = (JSONObject) JSONValue.parse(jc.getUser(ses));
+                if (u.get("discussionid") != null) {
+                    if (u.get("discussionid").toString() == request.getParameter("id")) {
+                        moderator = true;
+                    }
+
+                }
+            }
         %>
         <div class="container">
             <jsp:include page="header.jsp" flush="true" />
@@ -56,12 +59,11 @@
                                 <h2><%= currentThread.get("title").toString()%></h2>
                                 <text> <%= ((JSONObject)posts.get(0)).get("message").toString().replace("\n", "<br />") %></text>
                        <%--
-                                    
                                     if(u != null){
-                                        if(u.getUserId() == poster.getUserId() || moderator){
+                                        if(u.get("userid").toString() == poster.get("userid").toString() || moderator){
                                     %>                                        
                                             <p style="text-align: right; font-size: 13px;margin-bottom: -15px">
-                                            <a href="editpost.jsp?postid=<%=posts.get(0).getPostId()%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
+                                                <a href="editpost.jsp?postid=<%=((JSONObject) posts.get(0)).get("postid")%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
                                         </p>
                                         <%
                                         }
@@ -90,17 +92,17 @@
                                     
                                 <div class="allpostcontent">
                                     <text><%= ((JSONObject)posts.get(i)).get("message").toString().replace("\n", "<br />") %></text> <br/>
-                                <%--
+                                <%
                                     if(u != null){
-                                        if(u.getUserId() == posts.get(i).getUser().getUserId() || moderator){
+                                        if(u.get("userid") == ((JSONObject) posts.get(i)).get("userid").toString() || moderator){
                                     %>
                                         <p style="text-align: right; font-size: 13px;margin-bottom: -15px">
-                                            <a href="editpost.jsp?postid=<%=posts.get(i).getPostId()%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
+                                            <a href="editpost.jsp?postid=<%=((JSONObject) posts.get(i)).get("postid").toString()%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
                                         </p>
                                     <%
                                         }
                                     }
-                                --%>
+                                %>
                                     <p style="text-align: right; font-size: 13px;">#<%=i+1%></p>
                                 </div>
                                 
@@ -108,22 +110,22 @@
                         <%
                         }
                     %>
-                        <%--
+                        <%
                             if(u!=null){
                         %>
                                 <div class="form-group">
                                 <form action="newPost" method="post"> <br/>
                                     <textarea style="resize:none;background-color:rgb(15,25,40); color:white;" class="form-control" rows="5" id="comment" name="postcontent" placeholder="say something"></textarea><br/>
                                     <input type="submit" class="btn btn-default" style="background-color:rgb(0,100,0);width:25%; color:white; float:right; font-family: lato; font-size: 16px;" value="Post Reply">
-                                    <input type="hidden" name="threadid" value="<%= currentThread.getThreadId() %>">
+                                    <input type="hidden" name="threadid" value="<%= currentThread.get("threadid").toString() %>">
                                 </form>
                                 </div>
                                 <%
-                                --%>
+                                %>
                         <%
-//                            } else{
+                            } else{
                                 out.println("Please <a href='login.jsp' style='color:white;'>sign in</a> to post a comment");
-//                            }
+                            }
                         %>
                     </div>
                     <div class="contentthreadright">

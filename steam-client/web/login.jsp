@@ -1,3 +1,4 @@
+<%@page import="fb.FBConnection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,6 +21,10 @@
                             <input type="checkbox" name="checkRemember" /> Remember me on this computer <br/><br/>
                             <input type="submit" name="btnSubmit" value="Sign in"/>
                         </form>
+                        <%
+                            FBConnection fbConnection = new FBConnection();
+                        %>
+                        <a href="<%=fbConnection.getFBAuthUrl()%>">Login Via Facebook</a>
                         <a href="#">Forgot your password?</a>
                     </div>
                     <div class="highlight_right">

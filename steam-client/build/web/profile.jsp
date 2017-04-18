@@ -15,29 +15,42 @@
             
             JSONObject ses = (JSONObject) JSONValue.parse(jc.getUser((String) session.getAttribute("currentsession")));
             JSONObject req = (JSONObject) JSONValue.parse(jc.getUser((String) request.getParameter("uid")));
+            String img = (req.get("imageurl") == null) ? "" : req.get("imageurl").toString();
         %>
         <div class="container">
             <jsp:include page="header.jsp" flush="true" />
             <div class="profile_header">
                 <div class="profile_avatar" 
-                     style="background-image: url('image/user/<%=req.get("imageurl").toString()%>'); 
+                     style="background-image: url('image/user/<%=img%>'); 
                      background-repeat: no-repeat;
                      background-size: contain">
                 </div>
                 <div class="profile_summary">
                     <div class="profile_persona">
                         <h3><%=req.get("username").toString()%></h3>
-                        <p><b><%=req.get("name").toString()%></b> 
+                        <p><b>
                             <%
-                                if (!req.get("city").toString().equals("") || !req.get("province").toString().equals("") || !req.get("country").toString().equals("")) {
-                                    out.println("at");
-                                    out.println(req.get("city").toString() + " " + req.get("province").toString() + " " + req.get("country").toString());
+                                if (req.get("name") == null) {
+                                    out.print("");
+                                } else {
+                                    out.print(req.get("name").toString());
                                 }
+                            %>
+                            </b> 
+                            <%
+                                String city = (req.get("city") == null) ? "" : req.get("city").toString();
+                                String province = (req.get("province") == null) ? "" : req.get("province").toString();
+                                String country = (req.get("country") == null) ? "" : req.get("country").toString();
+                                if (!city.equals("") || !province.equals("") || !country.equals("")){
+                                    out.println("at");
+                                    out.println(city + " " + province + " " + country);
+                                }
+                                String description = (req.get("description") == null) ? "" : req.get("description").toString();
                             %> 
                         </p>
                     </div>
                     <div class="profile_desc">
-                        <%=req.get("description").toString()%>
+                        <%=description%>
                     </div>
                     <div style="clear: both;"></div>
                 </div>

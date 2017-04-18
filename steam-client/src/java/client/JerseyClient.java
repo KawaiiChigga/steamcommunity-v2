@@ -40,6 +40,13 @@ public class JerseyClient {
         return res;
     }
     
+    public void createAccount(JSONObject obj){
+        WebTarget resource = webTarget;
+        resource = resource.path("account/");
+        System.out.println(obj.toJSONString());
+        resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()));
+    }
+    
     public String searchAccount(String uid) {
         WebTarget resource = webTarget;
         resource = resource.path("account").path("search").queryParam("text", uid);
@@ -64,10 +71,10 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String discussion() {
+    public void insertDiscussion(JSONObject obj) {
         WebTarget resource = webTarget;
-        resource = resource.path("discussion");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+        resource = resource.path("discussion/");
+        resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()));
     }
 
     public String getDiscussion(String disid) {
@@ -118,9 +125,9 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String searchThread(String text, int disid) {
+    public String searchThread(String text, String disid) {
         WebTarget resource = webTarget;
-        resource = resource.path("thread").path("search").path(text).path("" + disid);
+        resource = resource.path("thread").path("search").path(disid).queryParam("text", text);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 

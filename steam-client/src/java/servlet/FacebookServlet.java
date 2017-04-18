@@ -3,28 +3,55 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package servlet;
 
-import client.JerseyClient;
+import fb.FBConnection;
+import fb.FBGraph;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 /**
  *
- * @author Daniel
+ * @author admin
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "FacebookServlet", urlPatterns = {"/fbhome"})
+public class FacebookServlet extends HttpServlet {
 
+    private String code="";
+    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        code = request.getParameter("code");
+		if (code == null || code.equals("")) {
+			throw new RuntimeException(
+					"ERROR: Didn't get code parameter in callback.");
+		}
+		FBConnection fbConnection = new FBConnection();
+		String accessToken = fbConnection.getAccessToken(code);
+
+		FBGraph fbGraph = new FBGraph(accessToken);
+		String graph = fbGraph.getFBGraph();
+                System.out.println(graph);
+		HashMap<String, String> fbProfileData = fbGraph.getGraphData(graph);
+		
+		out.println("<h1>Facebook Login using Java</h1>");
+		out.println("<h2>Application Main Menu</h2>");
+		out.println("<div>Welcome "+fbProfileData.get("name"));
+		out.println("<div>Your Email: "+fbProfileData.get("email"));
+		out.println("<div>You are "+fbProfileData.get("gender"));		
+	}
+    
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -36,7 +63,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -50,24 +77,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        
-        JerseyClient jc = new JerseyClient();
-        JSONObject obj = new JSONObject();
-        obj.put("username", username);
-        obj.put("password", password);
-        
-        JSONObject u = (JSONObject) JSONValue.parse(jc.login(obj));
-        
-        if (u != null) {
-            String id = u.get("userid").toString();
-            HttpSession session = request.getSession();
-            session.setAttribute("currentsession", id);
-            response.sendRedirect("profile.jsp?uid=" + id);
-        } else {
-            response.sendRedirect("login.jsp");
-        }
+        processRequest(request, response);
     }
 
     /**
