@@ -42,6 +42,7 @@ package servlet;
 
 
 
+import client.JerseyClient;
 import org.jCharts.axisChart.AxisChart;
 import org.jCharts.axisChart.customRenderers.axisValue.renderers.ValueLabelPosition;
 import org.jCharts.axisChart.customRenderers.axisValue.renderers.ValueLabelRenderer;
@@ -58,6 +59,9 @@ import javax.servlet.http.*;
 import java.awt.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 @WebServlet(name = "BarChartServlet", urlPatterns = {"/BarChartServlet"})
 public class BarChartServlet extends HttpServlet
@@ -70,7 +74,7 @@ public class BarChartServlet extends HttpServlet
 	protected AxisProperties axisProperties;
 	protected ChartProperties chartProperties;
 
-	protected int width = 1100;
+	protected int width = 1360;
 	protected int height = 720;
 
 
@@ -94,14 +98,14 @@ public class BarChartServlet extends HttpServlet
 
 		try
 		{
-			dataAxisProperties.setUserDefinedScale( 0, 2500 );
+			dataAxisProperties.setUserDefinedScale( 0, 1 );
 		}
 		catch( PropertyException propertyException )
 		{
 			propertyException.printStackTrace();
 		}
 
-		dataAxisProperties.setRoundToNearest( 2 );
+		dataAxisProperties.setRoundToNearest( 1 );
 
 		ChartFont titleFont = new ChartFont( new Font( "Lato", Font.PLAIN, 36 ), Color.black );
 		this.chartProperties.setTitleFont( titleFont );
@@ -123,13 +127,27 @@ public class BarChartServlet extends HttpServlet
 	{
 		try
 		{
-			String[] xAxisLabels = {"Rambo", "Dota 2", "Rainbow", "Hello"};
+                        JerseyClient jc = new JerseyClient();
+                        JSONArray arr = (JSONArray) JSONValue.parse(jc.getAllDiscussion());
+			String[] xAxisLabels = new String[arr.size()];
+                        double data[][] = new double[1][arr.size()];
+                        int count;
+                        for(int i=0;i<arr.size();i++){
+                            xAxisLabels[i] = new String();
+                            xAxisLabels[i] = ((JSONObject) arr.get(i)).get("gamename").toString();
+                            String disid =  ((JSONObject) arr.get(i)).get("discussionid").toString();
+                            count=0;
+                            JSONArray posts1 = (JSONArray) JSONValue.parse(jc.getAllThread(disid, "1"));
+                            JSONArray posts2 = (JSONArray) JSONValue.parse(jc.getAllThread(disid, "2"));
+                            count=posts1.size()+posts2.size();
+                            data[0][i] = count;
+                        }
 			String xAxisTitle = "Discussions";
 			String yAxisTitle = "Posts";
 			String title = "Steam Discussion Chart";
 			IAxisDataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );
 
-			double[][] data = new double[][]{{1500, 6880, 4510, 2600}};
+//			double[][] data = new double[][]{{1500, 6880, 4510, 2600,1000, 5000}};
 			String[] legendLabels = {"Number of Posts"};
 			Paint[] paints = new Paint[]{Color.yellow};
 			dataSeries.addIAxisPlotDataSet( new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR, this.barChartProperties ) );
