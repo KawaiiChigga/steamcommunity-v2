@@ -59,8 +59,9 @@ public class LoginServlet extends HttpServlet {
         obj.put("password", password);
         
         JSONObject u = (JSONObject) JSONValue.parse(jc.login(obj));
-        String id = u.get("userid").toString();
+        
         if (u != null) {
+            String id = u.get("userid").toString();
             HttpSession session = request.getSession();
             session.setAttribute("currentsession", id);
             response.sendRedirect("profile.jsp?uid=" + id);

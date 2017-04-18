@@ -119,9 +119,12 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                </div>\r\n");
       out.write("                    ");
 
-                        JSONObject u = (JSONObject) JSONValue.parse(jc.getUser((String) request.getSession().getAttribute("currentsession")));
+                        String ses = (String) request.getSession().getAttribute("currentsession");
+                        
+                        
                                 //CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
-                        if (u != null) {
+                        if (ses != null) {
+                            JSONObject u = (JSONObject) JSONValue.parse(jc.getUser(ses));
                             if (u.get("userid").toString().equals("1")) {
                     
       out.write("\r\n");
