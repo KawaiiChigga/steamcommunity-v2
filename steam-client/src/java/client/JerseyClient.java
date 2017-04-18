@@ -125,9 +125,9 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String searchThread(String text, int disid) {
+    public String searchThread(String text, String disid) {
         WebTarget resource = webTarget;
-        resource = resource.path("thread").path("search").path(text).path("" + disid);
+        resource = resource.path("thread").path("search").path(disid).queryParam("text", text);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
