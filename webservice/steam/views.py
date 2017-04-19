@@ -61,13 +61,9 @@ def login(request):
     if request.method == 'POST':
         username = request.data.get('username', None)
         password = request.data.get('password', None)
-        try:
-            queryset = User.objects.get(username=username, password=password)
-        except User.DoesNotExist:
-            return Response(None)
+        queryset = User.objects.get(username=username, password=password)
         serializer = UserSerializer(queryset)
         return Response(serializer.data)
-        
 
 
 # /account/search?text={text}
