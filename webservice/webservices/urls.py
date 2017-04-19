@@ -20,6 +20,7 @@ from steam import views
 urlpatterns = [
     url(r'^account/$', views.createAccount),
     url(r'^account/(?P<pk>[0-9]+)/$', views.user),
+    url(r'^account/email/(?P<email>[A-Za-z0-9\@\.]+)/$', views.checkByEmail),
     url(r'^account/login', views.login),
     url(r'^account/search/$', views.searchAccount),
     url(r'^discussion/$', views.discussion),

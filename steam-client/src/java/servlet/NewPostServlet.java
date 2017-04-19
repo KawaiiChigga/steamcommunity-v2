@@ -5,14 +5,19 @@
  */
 package servlet;
 
+import client.JerseyClient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 
 /**
@@ -48,7 +53,6 @@ public class NewPostServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -74,17 +78,21 @@ public class NewPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        Thread t = CtrlThread.getThread(Integer.parseInt(request.getParameter("threadid")));
-//        Post p = new Post(
-//                t, 
-//                CtrlAccount.getUser((Integer) request.getSession().getAttribute("currentsession")), 
-//                request.getParameter("postcontent"), 
-//                new Date(), 
-//                new Date()
-//        );
+        String th = request.getParameter("threadid");
+        JerseyClient jc = new JerseyClient();
+        JSONObject t = (JSONObject) JSONValue.parse(jc.getThread(th));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String now = dateFormat.format(new Date());
         
-//        CtrlPost.insertPost(p);
-//        response.sendRedirect("post.jsp?tid=" + t.getThreadId() + "&id="+ t.getDiscussion().getDiscussionId());
+        JSONObject p = new JSONObject();
+        p.put("threadid", th);
+        p.put("userid", Integer.parseInt((String) request.getSession().getAttribute("currentsession")));
+        p.put("message", request.getParameter("postcontent"));
+        p.put("postdatetime", now);
+        p.put("updatedatetime", now);
+        
+        jc.createPost(p);
+        response.sendRedirect("post.jsp?tid="+th+"&id="+t.get("discussionid").toString());
     }
 
     /**

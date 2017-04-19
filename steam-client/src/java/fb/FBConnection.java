@@ -21,7 +21,7 @@ public class FBConnection {
         //sesuaikan dengan app ID dan Secret masing-masing
 	public static final String FB_APP_ID = "1696709830346123";
 	public static final String FB_APP_SECRET = "8bc1f4c77e453a36ea98303b6a5ee53f";
-	public static final String REDIRECT_URI = "http://localhost:8080/steam-client/fbhome";
+	public static final String REDIRECT_URI = "http://localhost:8080/steam-client/facebookauth.jsp";
 
 	static String accessToken = "";
 
@@ -32,8 +32,7 @@ public class FBConnection {
 					+ FBConnection.FB_APP_ID + "&redirect_uri="
 					+ URLEncoder.encode(FBConnection.REDIRECT_URI, "UTF-8")
 					+ "&scope=";
-                        String scope=URLEncoder.encode("email,public_profile,"
-                                + "user_about_me,user_birthday,user_relationships", "UTF-8");
+                        String scope=URLEncoder.encode("email,public_profile", "UTF-8");
                         fbLoginUrl+=scope;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

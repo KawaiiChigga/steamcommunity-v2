@@ -20,11 +20,15 @@
                             <input type="password" name="txtPassword" /> <br/>
                             <input type="checkbox" name="checkRemember" /> Remember me on this computer <br/><br/>
                             <input type="submit" name="btnSubmit" value="Sign in"/>
+                            <%
+                                FBConnection fbConnection = new FBConnection();
+                            %>
+                            <a href="<%=fbConnection.getFBAuthUrl()%>">
+                                <input style="background-color: #4B6DAA; background-image: url('image/facebook-icon.png'); 
+                                       background-repeat: no-repeat; background-size: 17px; background-position: left" 
+                                       type="button" value="&nbsp;&nbsp;&nbsp;&nbsp; Login via Facebook"/>
+                            </a>
                         </form>
-                        <%
-                            FBConnection fbConnection = new FBConnection();
-                        %>
-                        <a href="<%=fbConnection.getFBAuthUrl()%>">Login Via Facebook</a>
                         <a href="#">Forgot your password?</a>
                     </div>
                     <div class="highlight_right">

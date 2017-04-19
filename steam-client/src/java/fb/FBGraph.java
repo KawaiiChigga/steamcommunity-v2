@@ -28,7 +28,7 @@ public class FBGraph {
 	public String getFBGraph() {
 		String graph = null;
 		try {
-                        String data = URLEncoder.encode("id,name,birthday,gender,email,relationship_status","UTF-8");
+                        String data = URLEncoder.encode("id,name,email,picture.width(400)","UTF-8");
 			//String gs = URLEncoder.encode("gender","UTF-8");
 			String g = "https://graph.facebook.com/me?access_token=" + accessToken
                                 +"&fields="+data;
@@ -51,19 +51,19 @@ public class FBGraph {
 		return graph;
 	}
 
-	public HashMap<String,String> getGraphData(String fbGraph) {
-		HashMap<String,String> fbProfile = new HashMap();
+	public JSONObject getGraphData(String fbGraph) {
+		JSONObject fbProfile = new JSONObject();
 		try {
                     JSONObject json = (JSONObject) JSONValue.parse(fbGraph);			
-			fbProfile.put("id", (String)json.get("id"));
-			fbProfile.put("name", (String)json.get("name"));
-			if (json.containsKey("email"))
-				fbProfile.put("email", (String)json.get("email"));
-			if (json.containsKey("gender"))
-				fbProfile.put("gender", (String)json.get("gender"));
+                    fbProfile.put("id", (String)json.get("id"));
+                    fbProfile.put("name", (String)json.get("name"));
+                    if (json.containsKey("email"))
+                        fbProfile.put("email", (String)json.get("email"));
+                    if (json.containsKey("picture"))
+                        fbProfile.put("picture", (String)((JSONObject)((JSONObject) json.get("picture")).get("data")).get("url"));
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("ERROR in parsing FB graph data. " + e);
+                    e.printStackTrace();
+                    throw new RuntimeException("ERROR in parsing FB graph data. " + e);
 		}
 		return fbProfile;
 	}

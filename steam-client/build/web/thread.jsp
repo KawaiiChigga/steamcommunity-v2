@@ -40,15 +40,13 @@
                     %>
                     <div class="contentthreadleft">
                         <%
-                            String category=null;
+                            String category = request.getParameter("categoryID");
                             String id = request.getParameter("id");
-                            if (category != null) {
-                                category = request.getParameter("categoryID");
-                            } else {
+                            if (category == null) {
                                 category = "1";
                             }
                             JSONArray data;
-                            if (category == "2") {
+                            if (category.equals("2")) {
                                 data = (JSONArray) JSONValue.parse(jc.getAllThread(disid, category));
                             } else {
                                 data = (JSONArray) JSONValue.parse(jc.getAllThread(disid, "1"));

@@ -43,6 +43,18 @@ def user(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# /account/email/{email}
+@api_view(['GET'])
+def checkByEmail(request, email):
+    if request.method == 'GET':
+        try:
+            queryset = User.objects.get(email__exact=email)
+        except User.DoesNotExist:
+            return Response(None)
+        serializer = UserSerializer(queryset)
+        return Response(serializer.data)
+
+
 # /account/login/
 @api_view(['POST'])
 def login(request):

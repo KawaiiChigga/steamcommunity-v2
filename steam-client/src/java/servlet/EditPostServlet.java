@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import client.JerseyClient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 
 /**
@@ -30,16 +33,16 @@ public class EditPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Post p = CtrlPost.getPost(Integer.parseInt(request.getParameter("postid")));
+        JerseyClient jc = new JerseyClient();
+        JSONObject p = (JSONObject) JSONValue.parse(jc.getPost(request.getParameter("postid")));
         if (request.getParameter("btn").equals("delete")) {
-          //  p.setMessage("This post has been deleted!");
+            p.put("message", "This post has been deleted!");
         } else {
-            //p.setMessage(request.getParameter("txtContent"));
+            p.put("message", request.getParameter("txtContent"));
         }
+        jc.updatePost(p.get("postid").toString(), p);
         
-        //CtrlPost.updatePost(p);
-        
-       // response.sendRedirect("profile.jsp?uid=" + p.getUser().getUserId());
+        response.sendRedirect("profile.jsp?uid=" + p.get("userid"));
     }
 
     @Override

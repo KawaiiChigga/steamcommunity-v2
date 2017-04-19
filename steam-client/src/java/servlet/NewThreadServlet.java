@@ -5,8 +5,11 @@
  */
 package servlet;
 
+import client.JerseyClient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -31,40 +36,40 @@ public class NewThreadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        User cur = CtrlAccount.getUser((Integer) request.getSession().getAttribute("currentsession"));
-        byte pinned = 0;
+        JerseyClient jc = new JerseyClient();
+        Integer cur = Integer.parseInt((String) request.getSession().getAttribute("currentsession"));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int pinned = 0;
         String judul = request.getParameter("txtTitle");
         try {
-            pinned = (byte) Integer.parseInt(request.getParameter("rbPinned"));
-            if (pinned == (byte) 1) {
+            pinned = Integer.parseInt(request.getParameter("rbPinned"));
+            if (pinned == 1) {
                 judul = "PINNED: " + judul;
             }
         } catch (Exception e) {
-            
         }
-  //      Thread u = new Thread(
- //               CtrlDiscussion.getDisc(Integer.parseInt(request.getParameter("idDiscussion"))), 
-     //           cur, 
-//                judul, 
-  //              new Date(), 
-   //             pinned, 
-    //            (byte) Integer.parseInt(request.getParameter("rbPost"))
-     //   );
         
-   //     u = CtrlThread.insertThread(u);
+        String now = dateFormat.format(new Date());
+        JSONObject th = new JSONObject();
+        th.put("discussionid", Integer.parseInt(request.getParameter("idDiscussion")));
+        th.put("userid", cur);
+        th.put("title", judul);
+        th.put("publishdatetime", now);
+        th.put("ispinned", pinned);
+        th.put("categorytype", Integer.parseInt(request.getParameter("rbPost")));
         
-      //  Post p = new Post(
-      //          u, 
-        //        cur, 
-        //        request.getParameter("txtContent"), 
-          //      new Date(), 
-            //    new Date()
-        //);
+        th = (JSONObject) JSONValue.parse(jc.createThread(th));
         
-    //    CtrlPost.insertPost(p);
-    //    response.sendRedirect("post.jsp?tid=" + u.getThreadId() + "&id="+ u.getDiscussion().getDiscussionId());
-//        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-//        rd.forward(request, response);
+        JSONObject p = new JSONObject();
+        p.put("threadid", (Long) th.get("threadid"));
+        p.put("userid", cur);
+        p.put("message", request.getParameter("txtContent"));
+        p.put("postdatetime", now);
+        p.put("updatedatetime", now);
+        
+        jc.createPost(p);
+        response.sendRedirect("post.jsp?tid="+th.get("threadid").toString()+"&id="+th.get("discussionid").toString());
+        
     }
 
     /**

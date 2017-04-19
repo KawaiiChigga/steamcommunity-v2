@@ -33,6 +33,8 @@ public class JerseyClient {
         webTarget = client.target(BASE_URI);
     }
 
+    // ACCOUNT
+    
     public String login(JSONObject obj){
         WebTarget resource = webTarget;
         resource = resource.path("account").path("login");
@@ -40,11 +42,10 @@ public class JerseyClient {
         return res;
     }
     
-    public void createAccount(JSONObject obj){
+    public String createAccount(JSONObject obj){
         WebTarget resource = webTarget;
         resource = resource.path("account/");
-        System.out.println(obj.toJSONString());
-        resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
     }
     
     public String searchAccount(String uid) {
@@ -65,6 +66,14 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String checkByEmail(String email){
+        WebTarget resource = webTarget;
+        resource = resource.path("account").path("email").path(email+"/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+    
+    // DISCUSSION
+    
     public String getAllDiscussion() {
         WebTarget resource = webTarget;
         resource = resource.path("discussion");
@@ -89,16 +98,24 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String post(int postid) {
+    // POST
+    
+    public String createPost(JSONObject obj) {
         WebTarget resource = webTarget;
-        resource = resource.path("post").path("" + postid);
+        resource = resource.path("post/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
+    }
+    
+    public String getPost(String postid) {
+        WebTarget resource = webTarget;
+        resource = resource.path("post").path(postid);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String createPost() {
+    public String updatePost(String postid, JSONObject obj) {
         WebTarget resource = webTarget;
-        resource = resource.path("post");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+        resource = resource.path("post").path(postid+"/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
     }
 
     public String getAllPost(String threadid) {
@@ -113,10 +130,12 @@ public class JerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
-    public String createThread() {
+    // THREAD
+    
+    public String createThread(JSONObject obj) {
         WebTarget resource = webTarget;
-        resource = resource.path("thread");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+        resource = resource.path("thread/");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
     }
 
     public String getThread(String threadid) {
@@ -136,6 +155,8 @@ public class JerseyClient {
         resource = resource.path("thread").path("discussion").path("" + disid).path("" + category);
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
+    
+    // FRIEND
 
     public String checkFriendStatus(String uid, String fid) {
         WebTarget resource = webTarget;
@@ -166,23 +187,6 @@ public class JerseyClient {
         resource = resource.path("friend").path("confirm").path(uid).path(fid+"/");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(Entity.json(obj.toJSONString()), String.class);
     }
-//    public String addFriend() {
-//        WebTarget resource = webTarget;
-//        resource = resource.path("friend");
-//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-//    }
-//
-//    public String checkFriendStatus(int uid, int fid) {
-//        WebTarget resource = webTarget;
-//        resource = resource.path("friend?uid=" + uid + "&fid=" + fid);
-//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-//    }
-//
-//    public String getFriendByUserId(int uid) {
-//        WebTarget resource = webTarget;
-//        resource = resource.path("friend").path("user").path("" + uid);
-//        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-//    }
 
     public void close() {
         client.close();

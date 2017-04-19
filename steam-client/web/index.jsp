@@ -56,9 +56,6 @@
                 </div>
                     <%
                         String ses = (String) request.getSession().getAttribute("currentsession");
-                        
-                        
-                                //CtrlAccount.getUser((Integer) session.getAttribute("currentsession"));
                         if (ses != null) {
                             JSONObject u = (JSONObject) JSONValue.parse(jc.getUser(ses));
                             if (u.get("userid").toString().equals("1")) {

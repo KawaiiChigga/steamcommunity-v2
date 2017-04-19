@@ -6,24 +6,36 @@
 
 package servlet;
 
+import client.JerseyClient;
 import fb.FBConnection;
 import fb.FBGraph;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
  * @author admin
  */
-@WebServlet(name = "FacebookServlet", urlPatterns = {"/fbhome"})
+@WebServlet(name = "FacebookServlet", urlPatterns = {"/fbregister"})
 public class FacebookServlet extends HttpServlet {
-
+    
     private String code="";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -31,24 +43,36 @@ public class FacebookServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         code = request.getParameter("code");
-		if (code == null || code.equals("")) {
-			throw new RuntimeException(
-					"ERROR: Didn't get code parameter in callback.");
-		}
-		FBConnection fbConnection = new FBConnection();
-		String accessToken = fbConnection.getAccessToken(code);
+        if (code == null || code.equals("")) {
+            throw new RuntimeException(
+                "ERROR: Didn't get code parameter in callback.");
+        }
+        FBConnection fbConnection = new FBConnection();
+        FBGraph fbGraph = new FBGraph(fbConnection.getAccessToken(code));
+        JSONObject fbProfileData = fbGraph.getGraphData(fbGraph.getFBGraph());
+        
+        String email = fbProfileData.get("email").toString();
+        if (email == null || email.equals("")){
+            response.sendRedirect("login.jsp");
+        }
+        
+        JerseyClient jc = new JerseyClient();
+        JSONObject user = (JSONObject) JSONValue.parse(jc.checkByEmail(email));
+        if (user == null) {
+            
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("currentsession", user.get("userid").toString());
+            response.sendRedirect("profile.jsp?uid=" + user.get("userid").toString());
+        }
+        
 
-		FBGraph fbGraph = new FBGraph(accessToken);
-		String graph = fbGraph.getFBGraph();
-                System.out.println(graph);
-		HashMap<String, String> fbProfileData = fbGraph.getGraphData(graph);
-		
-		out.println("<h1>Facebook Login using Java</h1>");
-		out.println("<h2>Application Main Menu</h2>");
-		out.println("<div>Welcome "+fbProfileData.get("name"));
-		out.println("<div>Your Email: "+fbProfileData.get("email"));
-		out.println("<div>You are "+fbProfileData.get("gender"));		
-	}
+        out.println("<h1>Facebook Login using Java</h1>");
+        out.println("<h2>Application Main Menu</h2>");
+        out.println("<div>Welcome "+fbProfileData.get("name"));
+        out.println("<div>Your Email: "+fbProfileData.get("email"));
+        out.println("<div>You are "+fbProfileData.get("gender"));		
+    }
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,7 +87,7 @@ public class FacebookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
     }
 
     /**
@@ -77,7 +101,45 @@ public class FacebookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String username = request.getParameter("txtAccount");
+        String password = request.getParameter("txtPassword");
+        String email = request.getParameter("txtEmail");
+        String name = request.getParameter("txtName");
+        String picture = request.getParameter("txtImageURL");
+        
+        JerseyClient jc = new JerseyClient();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        JSONObject obj = new JSONObject();
+        obj.put("username", username);
+        obj.put("password", password);
+        obj.put("email", email);
+        obj.put("joindate", dateFormat.format(new Date()));
+        
+        jc.createAccount(obj);
+        String uid = ((JSONObject) JSONValue.parse(jc.checkByEmail(email))).get("userid").toString();
+        
+        URL url = new URL(picture);
+        String imageURL = new File(request.getServletContext().getRealPath("")).getParentFile().getParent();
+        String filename = uid + ".png";
+        InputStream is = url.openStream();
+        OutputStream os = new FileOutputStream(new File(imageURL + "/web/image/user" + File.separator + filename));
+        
+        byte[] b = new byte[2048];
+        int length;
+        while ((length = is.read(b)) != -1) {
+            os.write(b, 0, length);
+        }
+        is.close();
+        os.close();
+        
+        JSONObject u = new JSONObject();
+        u.put("name", name);
+        u.put("imageurl", filename);
+        jc.editUser(uid, u);
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("currentsession", uid);
+        response.sendRedirect("profile.jsp?uid=" + uid);
     }
 
     /**

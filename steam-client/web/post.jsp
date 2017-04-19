@@ -30,7 +30,7 @@
             if (ses != null) {
                 u = (JSONObject) JSONValue.parse(jc.getUser(ses));
                 if (u.get("discussionid") != null) {
-                    if (u.get("discussionid").toString() == request.getParameter("id")) {
+                    if (u.get("discussionid").toString().equals(request.getParameter("id"))) {
                         moderator = true;
                     }
 
@@ -58,9 +58,9 @@
                             <div class="firstcontent">
                                 <h2><%= currentThread.get("title").toString()%></h2>
                                 <text> <%= ((JSONObject)posts.get(0)).get("message").toString().replace("\n", "<br />") %></text>
-                       <%--
+                       <%
                                     if(u != null){
-                                        if(u.get("userid").toString() == poster.get("userid").toString() || moderator){
+                                        if(u.get("userid").toString().equals(poster.get("userid").toString()) || moderator){
                                     %>                                        
                                             <p style="text-align: right; font-size: 13px;margin-bottom: -15px">
                                                 <a href="editpost.jsp?postid=<%=((JSONObject) posts.get(0)).get("postid")%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
@@ -68,7 +68,7 @@
                                         <%
                                         }
                                     }
-                                --%>
+                                %>
                                 <p style="text-align: right; font-size: 13px;">#1</p>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                     <text><%= ((JSONObject)posts.get(i)).get("message").toString().replace("\n", "<br />") %></text> <br/>
                                 <%
                                     if(u != null){
-                                        if(u.get("userid") == ((JSONObject) posts.get(i)).get("userid").toString() || moderator){
+                                        if(u.get("userid").toString().equals(((JSONObject) posts.get(i)).get("userid").toString()) || moderator){
                                     %>
                                         <p style="text-align: right; font-size: 13px;margin-bottom: -15px">
                                             <a href="editpost.jsp?postid=<%=((JSONObject) posts.get(i)).get("postid").toString()%>&id=<%=request.getParameter("id")%>" style="color:white;">Edit Post</a>
