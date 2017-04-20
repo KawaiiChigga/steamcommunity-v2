@@ -15,7 +15,7 @@
                         <br/><br/>
                         <img src="/steam-client/BarChartServlet" width="100%" >
                     </div>
-                    <div class="contentthreadright">
+                    <div class="contentthreadright">        
                     </div>
                 </div><div style="clear:both;"></div>
             </div>
