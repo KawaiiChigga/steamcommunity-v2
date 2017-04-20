@@ -2,3 +2,5 @@
 *.pyc
 *.pyc
 /steam-client/build/
+/composited-webservice/webservice-steam/nbproject/private/
+/composited-webservice/webservice-steam/build/
