@@ -9,15 +9,11 @@
             <jsp:include page="header.jsp" flush="true" />
             <div class="content">
                 <h3>Statistic Report</h3>
-                <div class="contentthread">
-                    <div class="contentthreadleft" style="opacity:0.8; background-color: #FFFFFF; color:black; min-height: 700px">
+                <div class="contentthread" style="padding:15px; opacity:0.8; background-color: #FFFFFF; color:black;">
                         Report at the number of threads per discussion : 
                         <br/><br/>
                         <img src="/steam-client/BarChartServlet" width="100%" >
                     </div>
-                    <div class="contentthreadright">        
-                    </div>
-                </div><div style="clear:both;"></div>
             </div>
             <jsp:include page="footer.jsp" flush="true" />
         </div>

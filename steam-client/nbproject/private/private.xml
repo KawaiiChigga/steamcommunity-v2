@@ -3,12 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/src/java/servlet/DiscussionServlet.java</file>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/web/thread.jsp</file>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/src/java/servlet/BarChartServlet.java</file>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/web/rightcontent.jsp</file>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/web/header.jsp</file>
-            <file>file:/E:/Kenny/eclipse/workspace/steamcommunity-v2/steam-client/web/admin.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/profile.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/fb/FBConnection.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/rightcontent.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/login.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/client/JerseyClient.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/BarChartServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/admin.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/DiscussionServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/addDiscussion.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/facebookauth.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/header.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/index.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/fb/FBGraph.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/web/thread.jsp</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/FacebookServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/src/java/servlet/NewThreadServlet.java</file>
+            <file>file:/D:/Sujana/Github/steamcommunity-v2/steam-client/nbproject/build-impl.xml</file>
         </group>
     </open-files>
 </project-private>

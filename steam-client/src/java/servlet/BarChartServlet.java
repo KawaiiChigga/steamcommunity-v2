@@ -90,7 +90,7 @@ public class BarChartServlet extends HttpServlet
 		axisProperties.getXAxisProperties().setScaleChartFont( axisScaleFont );
 		axisProperties.getYAxisProperties().setScaleChartFont( axisScaleFont );
 
-		ChartFont axisTitleFont = new ChartFont( new Font( "Arial", Font.PLAIN, 18 ), Color.black );
+		ChartFont axisTitleFont = new ChartFont( new Font( "Lato", Font.PLAIN, 18 ), Color.black );
 		axisProperties.getXAxisProperties().setTitleChartFont( axisTitleFont );
 		axisProperties.getYAxisProperties().setTitleChartFont( axisTitleFont );
 
@@ -143,13 +143,13 @@ public class BarChartServlet extends HttpServlet
                             data[0][i] = count;
                         }
 			String xAxisTitle = "Discussions";
-			String yAxisTitle = "Posts";
+			String yAxisTitle = "Threads";
 			String title = "Steam Discussion Chart";
-			IAxisDataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );
+			IAxisDataSeries dataSeries = new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, title );
 
 //			double[][] data = new double[][]{{1500, 6880, 4510, 2600,1000, 5000}};
 			String[] legendLabels = {"Number of Posts"};
-			Paint[] paints = new Paint[]{Color.yellow};
+			Paint[] paints = new Paint[]{new Color(27,40,56)};
 			dataSeries.addIAxisPlotDataSet( new AxisChartDataSet( data, legendLabels, paints, ChartType.BAR, this.barChartProperties ) );
 
 			AxisChart axisChart = new AxisChart( dataSeries, this.chartProperties, this.axisProperties, this.legendProperties, this.width, this.height );

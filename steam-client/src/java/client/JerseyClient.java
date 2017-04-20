@@ -26,7 +26,8 @@ public class JerseyClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://127.0.0.1:8000/";
+//    private static final String BASE_URI = "http://127.0.0.1:8000/";
+    private static final String BASE_URI = "http://192.168.68.1:8000/";
 
     public JerseyClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
