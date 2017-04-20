@@ -10,6 +10,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import org.json.simple.JSONObject;
 
+
 /**
  * Jersey REST client generated for REST resource:CobaWS [cobaWS]<br>
  * USAGE:
