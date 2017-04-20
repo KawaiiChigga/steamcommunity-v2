@@ -11,27 +11,6 @@
 <%@page import="fb.FBConnection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%
-    String code = request.getParameter("code");
-    if (code == null || code.equals("")) {
-        throw new RuntimeException(
-            "ERROR: Didn't get code parameter in callback.");
-    }
-    FBConnection fbConnection = new FBConnection();
-    FBGraph fbGraph = new FBGraph(fbConnection.getAccessToken(code));
-    JSONObject fbProfileData = fbGraph.getGraphData(fbGraph.getFBGraph());
-
-    String email = fbProfileData.get("email").toString();
-    if (email == null || email.equals("")){
-        response.sendRedirect("login.jsp");
-    }
-    
-    JerseyClient jc = new JerseyClient();
-    JSONObject user = (JSONObject) JSONValue.parse(jc.checkByEmail(email));
-    if (user == null) {
-        String name = fbProfileData.get("name").toString();
-        String picture = fbProfileData.get("picture").toString();
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -41,25 +20,26 @@
         <div class="container">
             <jsp:include page="header.jsp" flush="true" />
             <div class="content">
-                <h2>Create an Account</h2>
-                <div class="accountbox">
-                    <h4>Hello, <%=name%>!</h4>
-                    <br/>
-                    Please insert your Steam account name and new password to be registered in this website
-                    <br/>
-                    <form action="fbregister" method="POST">
-                        <table>
-                            <tr><td>Account name<br/>
-                                    <input type="text" name="txtAccount" required/></td></tr>
-                            <tr><td>Password<br/>
-                                    <input type="password" name="txtPassword" required/></td></tr>
-                        </table>
+                <%
+                    String success = request.getParameter("success");
+                    if (success.equals("true")) {
+                %>
+                    <h2>Success!</h2>
+                    <div class="accountbox">
+                        <%
+                            String ses = (String) session.getAttribute("currentsession");
+                            JerseyClient jc = new JerseyClient();
+                            JSONObject u = (JSONObject) JSONValue.parse(jc.getUser(ses));
+                            String name = u.get("name").toString();
+                        %>
+                        <h4>Hello, <%=name%>!</h4>
                         <br/>
-                        <input type="hidden" name="txtEmail" value="<%=email%>"/>
-                        <input type="hidden" name="txtName" value="<%=name%>"/>
-                        <input type="hidden" name="txtImageURL" value="<%=picture%>"/>
-                        <input type="submit" value="Create my account"/>
-                    </form>
+                        An account has been created for you.
+                        <br/>
+                        Click <b><a href="profile.jsp?uid=<%=ses%>">here</a></b> to continue
+                <%
+                    }
+                %>
                 </div>
                 <div class="joinbox">
                     <h3 style="color: #66C0F4">WHY JOIN STEAM?</h3>
@@ -92,10 +72,3 @@
         </div>
     </body>
 </html>
-
-<%
-    } else {
-        session.setAttribute("currentsession", user.get("userid").toString());
-        response.sendRedirect("profile.jsp?uid=" + user.get("userid").toString());
-    }
-%>

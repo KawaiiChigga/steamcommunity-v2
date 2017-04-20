@@ -21,7 +21,7 @@ public class FBConnection {
         //sesuaikan dengan app ID dan Secret masing-masing
 	public static final String FB_APP_ID = "1696709830346123";
 	public static final String FB_APP_SECRET = "8bc1f4c77e453a36ea98303b6a5ee53f";
-	public static final String REDIRECT_URI = "http://localhost:8080/steam-client/facebookauth.jsp";
+	public static final String REDIRECT_URI = "http://localhost:8080/steam-client/fbauth";
 
 	static String accessToken = "";
 
