@@ -61,7 +61,7 @@ public class NewThreadServlet extends HttpServlet {
         th = (JSONObject) JSONValue.parse(jc.createThread(th));
         
         JSONObject p = new JSONObject();
-        p.put("threadid", (Long) th.get("threadid"));
+        p.put("threadid", (Integer) Integer.parseInt(th.get("threadid").toString()));
         p.put("userid", cur);
         p.put("message", request.getParameter("txtContent"));
         p.put("postdatetime", now);
